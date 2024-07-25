@@ -12,7 +12,7 @@ export class PersInfoController {
     }
     
 
-  @Get('getAllPersonal')
+  @Get('getAll')
   findAll() {
     return this.persInfoService.findAll();
   }

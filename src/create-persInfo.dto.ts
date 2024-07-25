@@ -3,6 +3,7 @@ export class CreatePersInfoDto{
     tel: string;
     village: string;
     cell: string;
+    sector: string;
     district: string;
     province: string;
 }
