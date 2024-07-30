@@ -6,13 +6,13 @@ import { PersInfoService } from "src/service/persInfo.service";
 export class PersInfoController {
     constructor(private readonly persInfoService: PersInfoService) {}
 
-    @Post('create')
+    @Post()
     create(@Body() createPersInfoDto: CreatePersInfoDto) {
       return this.persInfoService.createPersonal(createPersInfoDto);
     }
     
 
-  @Get('getAll')
+  @Get()
   findAll() {
     return this.persInfoService.findAll();
   }
