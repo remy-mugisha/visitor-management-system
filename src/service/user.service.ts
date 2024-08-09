@@ -1,31 +1,28 @@
-import { Injectable, NotFoundException, BadRequestException } from '@nestjs/common';
-import { InjectModel } from '@nestjs/mongoose';
-import { Model } from 'mongoose';
-import { User } from '../user.interface';
-import { CreateUserDto } from '../create-user.dto';
+import { Injectable } from '@nestjs/common';
+import { InjectRepository } from '@nestjs/typeorm';
+import { Repository } from 'typeorm';
+import { User } from '../entities/tb_user.entity';
 
 @Injectable()
 export class UserService {
-  constructor(@InjectModel('User') private readonly userModel: Model<User>) {}
+  constructor(
+    @InjectRepository(User)
+    private userRepository: Repository<User>,
+  ) {}
 
-  async create(createUserDto: CreateUserDto): Promise<User> {
-    const createdUser = new this.userModel(createUserDto);
-    return createdUser.save();
+  findAll(): Promise<User[]> {
+    return this.userRepository.find();
   }
 
-  async findAll(): Promise<User[]> {
-    return this.userModel.find().exec();
+  findOne(id: number): Promise<User> {
+    return this.userRepository.findOne({where:{id}});
   }
 
-  async findById(id: string): Promise<User> {
-    try {
-      const user = await this.userModel.findById(id).exec();
-      if (!user) {
-        throw new NotFoundException(`User with ID ${id} not found`);
-      }
-      return user;
-    } catch (error) {
-      throw new BadRequestException('Invalid ID format');
-    }
+  create(user: User): Promise<User> {
+    return this.userRepository.save(user);
+  }
+
+  async remove(id: number): Promise<void> {
+    await this.userRepository.delete(id);
   }
 }
