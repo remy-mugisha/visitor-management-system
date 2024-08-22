@@ -1,8 +1,8 @@
-import { Controller, Get, Post, Body, Param, Delete } from '@nestjs/common';
+import { Controller, Get, Post, Body, Param, Delete, Put } from '@nestjs/common';
 import { UserService } from '../service/user.service';
 import { User } from '../entities/tb_user.entity';
 
-@Controller('api')
+@Controller('user')
 export class UserController {
   constructor(private readonly userService: UserService) {}
 
@@ -11,7 +11,7 @@ export class UserController {
     return this.userService.findAll();
   }
   @Get(':id')
-  findOne(@Param('id') id: string) {
+  findOne(@Param('id') id: number) {
     return this.userService.findOne(+id);
   }
   @Post('create')
@@ -19,7 +19,11 @@ export class UserController {
     return this.userService.create(user);
   }
   @Delete(':id')
-  remove(@Param('id') id: string) {
+  remove(@Param('id') id: number) {
     return this.userService.remove(+id);
+  }
+  @Put(':id')
+  update(@Param('id') id: number, @Body() user: Partial<User>) {
+    return this.userService.update(+id, user);
   }
 }

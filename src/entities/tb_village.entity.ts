@@ -12,5 +12,5 @@ export class Village {
   cellId: number;
 
   @Column()
-  villages_name: string;
+  village_name: string;
 }
